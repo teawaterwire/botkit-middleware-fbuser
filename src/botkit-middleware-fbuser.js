@@ -69,6 +69,10 @@ module.exports = function (options) {
                         user_data.timestamp = moment.now()
                         user_data.is_payment_enabled = fb_user.is_payment_enabled;
                         user_data.last_ad_referral = fb_user.last_ad_referral;
+                        
+                        // Clean user_data from undefined fields
+                        Object.keys(user_data).forEach((key) => (user_data[key] == undefined) && delete user_data[key]);
+                        
                         options.storage.users.save(user_data, function (err) {
                             logConsole('debug','Facebook profile refreshed:'+JSON.stringify(user_data))
                             if (err)
